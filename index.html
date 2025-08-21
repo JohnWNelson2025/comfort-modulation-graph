@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comfort Modulation Token Relationships</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="800" height="600"></canvas>
+  <script>
+    const config = {
+      type: 'bubble',
+      data: {
+        datasets: [{
+          label: 'Comfort Modulation Tokens',
+          data: [
+            { x: -10, y: 10, r: 12 },
+            { x: -5, y: -10, r: 8 },
+            { x: 0, y: 0, r: 10 },
+            { x: 5, y: -10, r: 8 },
+            { x: 10, y: 10, r: 12 }
+          ],
+          backgroundColor: [
+            'rgba(0, 200, 0, 0.6)',
+            'rgba(200, 0, 0, 0.6)',
+            'rgba(100, 100, 100, 0.6)',
+            'rgba(200, 0, 0, 0.6)',
+            'rgba(0, 200, 0, 0.6)'
+          ],
+          borderColor: 'rgba(0,0,0,0.1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            title: { display: true, text: 'Influence Axis' },
+            min: -15,
+            max: 15
+          },
+          y: {
+            title: { display: true, text: 'Impact Axis' },
+            min: -15,
+            max: 15
+          }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: 'Comfort Modulation Token Relationships'
+          },
+          legend: { display: false }
+        }
+      }
+    };
+
+    new Chart(document.getElementById('myChart'), config);
+  </script>
+</body>
+</html>
