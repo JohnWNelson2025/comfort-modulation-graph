@@ -40,7 +40,7 @@
     Each quadrant reflects a different pathway: internal disruption, external support, subtle modulation, or direct impact.
   </div>
 
-  <script>
+<script>
   const ctx = document.getElementById('comfortChart').getContext('2d');
 
   const comfortChart = new Chart(ctx, {
@@ -48,67 +48,61 @@
     data: {
       datasets: [
         {
-          label: 'Internal Predictors',
-          backgroundColor: 'rgba(255, 99, 132, 0.6)',
-          borderColor: 'rgba(255, 99, 132, 1)',
+          label: 'Core Hunch',
+          backgroundColor: '#4CAF50',
+          borderColor: '#388E3C',
           data: [
-            { x: -8, y: 7, r: 10, label: 'Pain' },
-            { x: -6, y: 6, r: 8, label: 'Stress' }
+            { x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }
           ]
         },
         {
-          label: 'Modulators',
-          backgroundColor: 'rgba(153, 102, 255, 0.6)',
-          borderColor: 'rgba(153, 102, 255, 1)',
+          label: 'Internal Predictors',
+          backgroundColor: '#F44336',
+          borderColor: '#D32F2F',
           data: [
-            { x: -4, y: 2, r: 6, label: 'Attention' },
-            { x: -2, y: 3, r: 5, label: 'Emotion' }
+            { x: -10, y: -10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
+            { x: -9, y: -9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
           ]
         },
         {
           label: 'External Predictors',
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: '#2196F3',
+          borderColor: '#1976D2',
           data: [
-            { x: 3, y: 2, r: 6, label: 'Environment' },
-            { x: 5, y: 3, r: 7, label: 'Support' }
+            { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
+            { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
+          ]
+        },
+        {
+          label: 'Modulators',
+          backgroundColor: '#9C27B0',
+          borderColor: '#7B1FA2',
+          data: [
+            { x: -5, y: 10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
+            { x: -6, y: 9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
           ]
         },
         {
           label: 'Outcomes',
-          backgroundColor: 'rgba(255, 206, 86, 0.6)',
-          borderColor: 'rgba(255, 206, 86, 1)',
+          backgroundColor: '#FF9800',
+          borderColor: '#F57C00',
           data: [
-            { x: 7, y: 8, r: 9, label: 'Relaxation' },
-            { x: 6, y: 7, r: 8, label: 'Relief' }
-          ]
-        },
-        {
-          label: 'Core Hunch',
-          backgroundColor: 'rgba(0, 200, 83, 0.8)',
-          borderColor: 'rgba(0, 200, 83, 1)',
-          data: [
-            { x: 0, y: 0, r: 12, label: 'Comfort Theory' }
+            { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
+            { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
           ]
         }
       ]
     },
     options: {
+      animation: {
+        duration: 2000
+      },
       plugins: {
         tooltip: {
           callbacks: {
             label: function(context) {
               const label = context.raw.label || '';
-              const x = context.raw.x;
-              const y = context.raw.y;
-              let quadrant = '';
-
-              if (x < 0 && y > 0) quadrant = 'Disruptive Internal Predictor';
-              else if (x < 0 && y < 0) quadrant = 'Subtle Modulator';
-              else if (x > 0 && y < 0) quadrant = 'Mild External Predictor';
-              else if (x > 0 && y > 0) quadrant = 'Supportive External Outcome';
-              else quadrant = 'Core Concept';
-
+              const quadrant = context.raw.quadrant || '';
               return `${label} → ${quadrant}`;
             }
           }
@@ -125,18 +119,18 @@
         x: {
           title: {
             display: true,
-            text: 'Influence on Comfort'
+            text: 'Influence Axis'
           },
-          min: -10,
-          max: 10
+          min: -12,
+          max: 12
         },
         y: {
           title: {
             display: true,
-            text: 'Impact on Outcome'
+            text: 'Impact Axis'
           },
-          min: -10,
-          max: 10
+          min: -12,
+          max: 12
         }
       }
     }
