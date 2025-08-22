@@ -13,18 +13,18 @@
         datasets: [{
           label: 'Comfort Modulation Tokens',
           data: [
-            { x: -10, y: 10, r: 12 },
-            { x: -5, y: -10, r: 8 },
-            { x: 0, y: 0, r: 10 },
-            { x: 5, y: -10, r: 8 },
-            { x: 10, y: 10, r: 12 }
+            { x: -10, y: 10, r: 12 },  // Internal Predictors
+            { x: -5, y: -10, r: 8 },   // Modulators
+            { x: 0, y: 0, r: 10 },     // Core Hunch
+            { x: 5, y: -10, r: 8 },    // Outcomes
+            { x: 10, y: 10, r: 12 }    // External Predictors
           ],
           backgroundColor: [
-            'rgba(0, 200, 0, 0.6)',
-            'rgba(200, 0, 0, 0.6)',
-            'rgba(100, 100, 100, 0.6)',
-            'rgba(200, 0, 0, 0.6)',
-            'rgba(0, 200, 0, 0.6)'
+            '#F44336', // Internal Predictors (-10, 10) - red
+            '#9C27B0', // Modulators (-5, -10) - purple
+            '#4CAF50', // Core Hunch (0, 0) - green
+            '#FF9800', // Outcomes (5, -10) - orange
+            '#2196F3'  // External Predictors (10, 10) - blue
           ],
           borderColor: 'rgba(0,0,0,0.1)',
           borderWidth: 1
@@ -48,7 +48,21 @@
             display: true,
             text: 'Comfort Modulation Token Relationships'
           },
-          legend: { display: false }
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const labels = [
+                  'Internal Predictors (β = -0.6)',
+                  'Modulators (Mediator)',
+                  'Core Hunch (Comfort Modulates Pain)',
+                  'Outcomes (e.g., Reduced Pain)',
+                  'External Predictors (β = 0.7)'
+                ];
+                return labels[context.dataIndex];
+              }
+            }
+          }
         }
       }
     };
