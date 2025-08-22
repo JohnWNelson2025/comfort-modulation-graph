@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Comfort Modulation Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,7 +13,9 @@
     }
     canvas {
       max-width: 900px;
-      margin: auto;
+      height: 500px;
+      margin: 40px auto;
+      display: block;
     }
     .description {
       max-width: 800px;
@@ -31,111 +32,113 @@
 <body>
 
   <h1>Comfort Modulation Dashboard</h1>
-  <canvas id="comfortChart"></canvas>
+  <canvas id="comfortChart" width="900" height="500"></canvas>
 
   <div class="description">
     <strong>Interpretive Summary:</strong><br>
-    Comfort arises from a dynamic interplay between internal and external predictors, shaped by modulators like attention and emotion.  
-    The core hunch suggests that when these elements are acknowledged and modulated, comfort becomes a likely outcome.  
+    Comfort arises from a dynamic interplay between internal and external predictors, shaped by modulators like attention and emotion.
+    The core hunch suggests that when these elements are acknowledged and modulated, comfort becomes a likely outcome.
     Each quadrant reflects a different pathway: internal disruption, external support, subtle modulation, or direct impact.
   </div>
 
-<script>
-  const ctx = document.getElementById('comfortChart').getContext('2d');
+  <script>
+    window.onload = function() {
+      const ctx = document.getElementById('comfortChart').getContext('2d');
 
-  const comfortChart = new Chart(ctx, {
-    type: 'bubble',
-    data: {
-      datasets: [
-        {
-          label: 'Core Hunch',
-          backgroundColor: '#4CAF50',
-          borderColor: '#388E3C',
-          data: [
-            { x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }
+      new Chart(ctx, {
+        type: 'bubble',
+        data: {
+          datasets: [
+            {
+              label: 'Core Hunch',
+              backgroundColor: '#4CAF50',
+              borderColor: '#388E3C',
+              data: [
+                { x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }
+              ]
+            },
+            {
+              label: 'Internal Predictors',
+              backgroundColor: '#F44336',
+              borderColor: '#D32F2F',
+              data: [
+                { x: -10, y: 10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
+                { x: -9, y: 9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
+              ]
+            },
+            {
+              label: 'External Predictors',
+              backgroundColor: '#2196F3',
+              borderColor: '#1976D2',
+              data: [
+                { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
+                { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
+              ]
+            },
+            {
+              label: 'Modulators',
+              backgroundColor: '#9C27B0',
+              borderColor: '#7B1FA2',
+              data: [
+                { x: -5, y: -10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
+                { x: -6, y: -9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
+              ]
+            },
+            {
+              label: 'Outcomes',
+              backgroundColor: '#FF9800',
+              borderColor: '#F57C00',
+              data: [
+                { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
+                { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
+              ]
+            }
           ]
         },
-        {
-          label: 'Internal Predictors',
-          backgroundColor: '#F44336',
-          borderColor: '#D32F2F',
-          data: [
-            { x: -10, y: -10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
-            { x: -9, y: -9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
-          ]
-        },
-        {
-          label: 'External Predictors',
-          backgroundColor: '#2196F3',
-          borderColor: '#1976D2',
-          data: [
-            { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
-            { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
-          ]
-        },
-        {
-          label: 'Modulators',
-          backgroundColor: '#9C27B0',
-          borderColor: '#7B1FA2',
-          data: [
-            { x: -5, y: 10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
-            { x: -6, y: 9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
-          ]
-        },
-        {
-          label: 'Outcomes',
-          backgroundColor: '#FF9800',
-          borderColor: '#F57C00',
-          data: [
-            { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
-            { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
-          ]
-        }
-      ]
-    },
-    options: {
-      animation: {
-        duration: 2000
-      },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              const label = context.raw.label || '';
-              const quadrant = context.raw.quadrant || '';
-              return `${label} → ${quadrant}`;
+        options: {
+          animation: {
+            duration: 2000
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.raw.label || '';
+                  const quadrant = context.raw.quadrant || '';
+                  return `${label} → ${quadrant}`;
+                }
+              }
+            },
+            legend: {
+              position: 'top',
+              labels: {
+                boxWidth: 20,
+                padding: 15
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Influence Axis'
+              },
+              min: -12,
+              max: 12
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Impact Axis'
+              },
+              min: -12,
+              max: 12
             }
           }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            boxWidth: 20,
-            padding: 15
-          }
         }
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Influence Axis'
-          },
-          min: -12,
-          max: 12
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Impact Axis'
-          },
-          min: -12,
-          max: 12
-        }
-      }
-    }
-  });
-</script>
+      });
+    };
+  </script>
 
 </body>
 </html>
