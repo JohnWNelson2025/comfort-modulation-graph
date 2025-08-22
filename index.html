@@ -3,6 +3,7 @@
 <head>
   <title>Comfort Modulation Token Relationships</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
 <body>
   <canvas id="myChart" width="800" height="600"></canvas>
@@ -20,11 +21,11 @@
             { x: 10, y: 10, r: 12 }    // External Predictors
           ],
           backgroundColor: [
-            '#F44336', // Internal Predictors (-10, 10) - red
-            '#9C27B0', // Modulators (-5, -10) - purple
-            '#4CAF50', // Core Hunch (0, 0) - green
-            '#FF9800', // Outcomes (5, -10) - orange
-            '#2196F3'  // External Predictors (10, 10) - blue
+            '#F44336', // red
+            '#9C27B0', // purple
+            '#4CAF50', // green
+            '#FF9800', // orange
+            '#2196F3'  // blue
           ],
           borderColor: 'rgba(0,0,0,0.1)',
           borderWidth: 1
@@ -62,13 +63,34 @@
                 return labels[context.dataIndex];
               }
             }
+          },
+          datalabels: {
+            align: 'center',
+            anchor: 'center',
+            font: {
+              weight: 'bold',
+              size: 12
+            },
+            formatter: function(value, context) {
+              const bubbleLabels = [
+                'Internal',
+                'Modulator',
+                'Core',
+                'Outcome',
+                'External'
+              ];
+              return bubbleLabels[context.dataIndex];
+            },
+            color: '#000'
           }
         }
       }
     };
 
-    new Chart(document.getElementById('myChart'), config);
+    new Chart(document.getElementById('myChart'), {
+      ...config,
+      plugins: [ChartDataLabels]
+    });
   </script>
 </body>
 </html>
-<!-- trigger rebuild -->
