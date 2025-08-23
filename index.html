@@ -17,13 +17,21 @@
       color: #fff;
     }
 
+    #chartContainer {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
     canvas {
+      width: 100%;
+      height: 500px;
       background-color: transparent;
-      max-width: 100%;
+      display: block;
     }
 
     #themeToggle {
-      margin: 20px 0;
+      margin-bottom: 20px;
       padding: 10px 20px;
       font-size: 14px;
       cursor: pointer;
@@ -34,14 +42,20 @@
     }
 
     .description {
-      margin-top: 30px;
-      font-family: sans-serif;
+      max-width: 900px;
+      margin: 30px auto;
+      font-size: 16px;
+      line-height: 1.6;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 20px;
     }
 
     th, td {
@@ -55,12 +69,18 @@
   </style>
 </head>
 <body class="light-mode">
-  <div style="text-align: center;">
+
+  <div id="chartContainer">
     <button id="themeToggle">Toggle Theme</button>
-    <canvas id="comfortChart" width="800" height="600"></canvas>
+    <canvas id="comfortChart"></canvas>
   </div>
 
   <div class="description">
+    <strong>Interpretive Summary:</strong><br>
+    Comfort arises from a dynamic interplay between internal and external predictors, shaped by modulators like attention and emotion.
+    The core hunch suggests that when these elements are acknowledged and modulated, comfort becomes a likely outcome.
+    Each quadrant reflects a different pathway: internal disruption, external support, subtle modulation, or direct impact.
+
     <h3>Quadrant Interpretations</h3>
     <table>
       <thead>
@@ -107,70 +127,127 @@
   </div>
 
   <script>
+    Chart.register(ChartDataLabels);
+
     const ctx = document.getElementById('comfortChart').getContext('2d');
-    const comfortChart = new Chart(ctx, {
+
+    new Chart(ctx, {
       type: 'bubble',
       data: {
         datasets: [
           {
-            label: 'Disruptive Predictors',
-            data: [{ x: -6, y: 6, r: 10 }],
-            backgroundColor: 'rgba(255, 99, 132, 0.6)',
-            datalabels: { align: 'center', color: '#fff', font: { weight: 'bold' } }
+            label: 'Core Hunch',
+            backgroundColor: '#4CAF50',
+            borderColor: '#388E3C',
+            data: [
+              { x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }
+            ]
           },
           {
-            label: 'Supportive Predictors',
-            data: [{ x: 6, y: 6, r: 10 }],
-            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-            datalabels: { align: 'center', color: '#fff', font: { weight: 'bold' } }
+            label: 'Internal Predictors',
+            backgroundColor: '#F44336',
+            borderColor: '#D32F2F',
+            data: [
+              { x: -10, y: 10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
+              { x: -9, y: 9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
+            ]
+          },
+          {
+            label: 'External Predictors',
+            backgroundColor: '#2196F3',
+            borderColor: '#1976D2',
+            data: [
+              { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
+              { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
+            ]
           },
           {
             label: 'Modulators',
-            data: [{ x: -6, y: -6, r: 10 }],
-            backgroundColor: 'rgba(255, 206, 86, 0.6)',
-            datalabels: { align: 'center', color: '#000', font: { weight: 'bold' } }
+            backgroundColor: '#9C27B0',
+            borderColor: '#7B1FA2',
+            data: [
+              { x: -5, y: -10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
+              { x: -6, y: -9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
+            ]
           },
           {
             label: 'Outcomes',
-            data: [{ x: 6, y: -6, r: 10 }],
-            backgroundColor: 'rgba(153, 102, 255, 0.6)',
-            datalabels: { align: 'center', color: '#fff', font: { weight: 'bold' } }
-          },
-          {
-            label: 'Comfort Theory',
-            data: [{ x: 0, y: 0, r: 12 }],
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            datalabels: { align: 'center', color: '#fff', font: { weight: 'bold' } }
+            backgroundColor: '#FF9800',
+            borderColor: '#F57C00',
+            data: [
+              { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
+              { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
+            ]
           }
         ]
       },
       options: {
+        animation: {
+          duration: 2000
+        },
+        layout: {
+          padding: {
+            top: 20,
+            bottom: 20,
+            left: 20,
+            right: 20
+          }
+        },
         plugins: {
           datalabels: {
-            formatter: (value, ctx) => ctx.dataset.label,
+            align: 'center',
+            anchor: 'center',
+            color: '#fff',
+            font: {
+              weight: 'bold',
+              size: 12
+            },
+            formatter: function(value) {
+              return value.label;
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.raw.label || '';
+                const quadrant = context.raw.quadrant || '';
+                return `${label} → ${quadrant}`;
+              }
+            }
           },
           legend: {
-            position: 'bottom',
+            position: 'top',
             labels: {
-              color: 'inherit',
-              font: { size: 12 }
+              boxWidth: 20,
+              padding: 15
             }
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Predictor Type', color: 'inherit' },
+            title: {
+              display: true,
+              text: 'Influence Axis',
+              color: 'inherit'
+            },
+            min: -12,
+            max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           },
           y: {
-            title: { display: true, text: 'Comfort Influence', color: 'inherit' },
+            title: {
+              display: true,
+              text: 'Impact Axis',
+              color: 'inherit'
+            },
+            min: -12,
+            max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           }
         }
-      },
-      plugins: [ChartDataLabels]
+      }
     });
 
     const toggleButton = document.getElementById('themeToggle');
