@@ -245,56 +245,162 @@
                 padding: 15
               }
             }
+          },<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comfort Modulation Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    body.light-mode {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+    body.dark-mode {
+      background-color: #121212;
+      color: #fff;
+    }
+    #chartContainer {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    canvas {
+      width: 100%;
+      height: 500px;
+      background-color: transparent;
+      display: block;
+    }
+    #themeToggle {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background-color: #2196F3;
+      color: white;
+    }
+  </style>
+</head>
+<body class="light-mode">
+  <div id="chartContainer">
+    <button id="themeToggle">Toggle Background for Bubble Visibility</button>
+    <canvas id="comfortChart"></canvas>
+  </div>
+
+  <script>
+    Chart.register(ChartDataLabels);
+
+    function getLabelColor() {
+      return document.body.classList.contains('dark-mode') ? '#fff' : '#000';
+    }
+
+    const ctx = document.getElementById('comfortChart').getContext('2d');
+    const comfortChart = new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          {
+            label: 'Core Hunch',
+            backgroundColor: '#4CAF50',
+            borderColor: '#388E3C',
+            data: [{ x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }]
           },
-          scales: {
-            x: {
-              title:
- display: true,
-              text: 'Influence Axis',
-              color: 'inherit'
-            },
+          {
+            label: 'Internal Predictors',
+            backgroundColor: '#F44336',
+            borderColor: '#D32F2F',
+            data: [
+              { x: -10, y: 10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
+              { x: -9, y: 9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
+            ]
+          },
+          {
+            label: 'External Predictors',
+            backgroundColor: '#2196F3',
+            borderColor: '#1976D2',
+            data: [
+              { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
+              { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
+            ]
+          },
+          {
+            label: 'Modulators',
+            backgroundColor: '#9C27B0',
+            borderColor: '#7B1FA2',
+            data: [
+              { x: -5, y: -10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
+              { x: -6, y: -9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
+            ]
+          },
+          {
+            label: 'Outcomes',
+            backgroundColor: '#FF9800',
+            borderColor: '#F57C00',
+            data: [
+              { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
+              { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
+            ]
+          }
+        ]
+      },
+      options: {
+        animation: { duration: 2000 },
+        layout: { padding: { top: 20, bottom: 20, left: 20, right: 20 } },
+        plugins: {
+          datalabels: {
+            align: 'center',
+            anchor: 'center',
+            color: getLabelColor,
+            font: { weight: 'bold', size: 12 },
+            formatter: function(value) { return value.label; }
+          },
+          tooltip: {
+            callbacks: { label: function(context) { return `${context.raw.label} → ${context.raw.quadrant}`; } }
+          },
+          legend: { position: 'top', labels: { boxWidth: 20, padding: 15 } }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Influence Axis', color: 'inherit' },
             min: -12,
             max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           },
           y: {
-            title: {
-              display: true,
-              text: 'Impact Axis',
-              color: 'inherit'
-            },
+            title: { display: true, text: 'Impact Axis', color: 'inherit' },
             min: -12,
             max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           }
         }
-      });
-
-      const toggleButton = document.getElementById('themeToggle');
-
-      function updateCanvasBackground() {
-        const canvas = document.getElementById('comfortChart');
-        const isDark = document.body.classList.contains('dark-mode');
-        canvas.style.backgroundColor = isDark ? '#000' : '#fff';
       }
+    });
 
-      // Initial setup
+    const toggleButton = document.getElementById('themeToggle');
+
+    function updateCanvasBackground() {
+      const canvas = document.getElementById('comfortChart');
+      const isDark = document.body.classList.contains('dark-mode');
+      canvas.style.backgroundColor = isDark ? '#000' : '#fff';
+    }
+
+    // Initial setup
+    updateCanvasBackground();
+
+    // Toggle theme and update canvas background
+    toggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      document.body.classList.toggle('dark-mode');
       updateCanvasBackground();
-
-      // Toggle theme and update canvas background
-      toggleButton.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        document.body.classList.toggle('dark-mode');
-        updateCanvasBackground();
-        comfortChart.options.plugins.datalabels.color = getLabelColor;
-        comfortChart.update();
-      });
-    };
+      comfortChart.options.plugins.datalabels.color = getLabelColor;
+      comfortChart.update();
+    });
   </script>
 </body>
 </html>
-
-
-
