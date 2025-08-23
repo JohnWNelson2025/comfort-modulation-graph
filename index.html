@@ -52,6 +52,16 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
+    body.light-mode .description {
+      background-color: #fff;
+      color: #000;
+    }
+
+    body.dark-mode .description {
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -65,6 +75,15 @@
 
     th {
       background-color: #ddd;
+    }
+
+    body.dark-mode th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    body.dark-mode td {
+      color: #fff;
     }
   </style>
 </head>
@@ -265,9 +284,10 @@
       canvas.style.backgroundColor = isDark ? '#000' : '#fff';
     }
 
-    // Initial setup
+     // Initial setup
     updateCanvasBackground();
 
+    // Toggle theme and update canvas background
     toggleButton.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
       document.body.classList.toggle('dark-mode');
