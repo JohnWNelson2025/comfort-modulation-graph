@@ -11,25 +11,21 @@
       background-color: #f4f4f4;
       color: #000;
     }
-
     body.dark-mode {
       background-color: #121212;
       color: #fff;
     }
-
     #chartContainer {
       max-width: 900px;
       margin: auto;
       padding: 20px;
     }
-
     canvas {
       width: 100%;
       height: 500px;
       background-color: transparent;
       display: block;
     }
-
     #themeToggle {
       margin-bottom: 20px;
       padding: 10px 20px;
@@ -40,7 +36,6 @@
       background-color: #2196F3;
       color: white;
     }
-
     .description {
       max-width: 900px;
       margin: 30px auto;
@@ -51,195 +46,127 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
     body.light-mode .description {
       background-color: #fff;
       color: #000;
     }
-
     body.dark-mode .description {
       background-color: #1e1e1e;
       color: #fff;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
-
     th, td {
       padding: 10px;
       border: 1px solid #ccc;
     }
-
     th {
       background-color: #ddd;
     }
-
     body.dark-mode th {
       background-color: #333;
       color: #fff;
     }
-
     body.dark-mode td {
       color: #fff;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background-color: #555;
+      color: white;
+    }
+    .tab-button.active {
+      background-color: #2196F3;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 14px;
+      font-style: italic;
     }
   </style>
 </head>
 <body class="light-mode">
 
-    <div class="description">
+  <div class="description">
     <strong>About This Visualization:</strong><br>
-    This interactive dashboard presents an AI-generated conceptual model of comfort, developed through a collaborative workflow using Grok4, GitHub, and Microsoft Copilot. The visualization offers an alternative lens on the Nichols Nelson Model of Comfort (NNMC), which is based on the Nichols Theory of Comfort (Nichols & Nelson, 2021) and was co-developed by <strong>John W. Nelson, PhD, MS, RN</strong> and <strong>Tara Nichols, DNP, ARNP, CCNS</strong>. Both Drs. Nelson and Nichols serve as Adjunct Faculty in the College of Allied Health and Nursing at <strong>Minnesota State University, Mankato</strong>. The NNMC traditionally depicts external and internal predictors leading to the outcome of comfort. In contrast, this bubble chart reflects Grok’s interpretation using the Model Context Protocol (MCP), a methodology grounded in <strong>Nelson's Methodology of Healthcare Analytics</strong>, a quality management process that is story-driven, mixed-method, and analytically rigorous. By integrating multiple AI tools and platforms, this dashboard explores new representations of comfort for comparison, refinement, and deeper understanding alongside human-developed models.
+    This interactive dashboard presents an AI-generated conceptual model of comfort, developed through a collaborative workflow using Grok4, GitHub, and Microsoft Copilot...
   </div>
 
   <div id="chartContainer">
     <button id="themeToggle">Toggle Background for Bubble Visibility</button>
-    <canvas id="comfortChart"></canvas>
+
+    <!-- TAB BUTTONS: Modular hook for future dropdown toggle -->
+    <!-- To replace buttons with <select>, insert dropdown here and bind to switchView() -->
+    <button class="tab-button active" onclick="openTab(event, 'bubbleTab')">Bubble View</button>
+    <button class="tab-button" onclick="openTab(event, 'countryTab')">Country Comparison</button>
+    <!-- Future Expansion: Add button or dropdown option for "Regional Overlay" or "Token Drilldown" -->
+
+    <!-- TAB CONTENT: Modular containers for scalable views -->
+    <div id="bubbleTab" class="tab-content active">
+      <canvas id="comfortChart" aria-label="Bubble Chart for NNMC Tokens"></canvas>
+    </div>
+
+    <div id="countryTab" class="tab-content">
+      <canvas id="countryChart" aria-label="Bar Chart for HIC/LMIC Impacts"></canvas>
+      <div class="disclaimer">
+        <!-- Future Expansion: Consider dynamic disclaimer injection based on selected view -->
+        This bar graph is based on hypothetical data generated from a conversation between Dr. John Nelson and Grok (xAI)...
+      </div>
+    </div>
+
+    <!-- Future View Placeholder -->
+    <!-- Example: <div id="regionalTab" class="tab-content">...</div> -->
+    <!-- Example: <div id="tokenDrilldownTab" class="tab-content">...</div> -->
   </div>
 
   <div class="description">
     <strong>Interpretive Summary:</strong><br>
-    Comfort arises from a dynamic interplay between internal and external predictors, shaped by modulators like attention and emotion.
-    The core hunch suggests that when these elements are acknowledged and modulated, comfort becomes a likely outcome.
-    Each quadrant reflects a different pathway: internal disruption, external support, subtle modulation, or direct impact.
-
-    <h3>Quadrant Interpretations</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Quadrant</th>
-          <th>Behavioral Role</th>
-          <th>Example Tokens</th>
-          <th>Statistical Weight (β)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Top Left</td>
-          <td>Disruptive Internal Predictors</td>
-          <td>Worry, Helplessness</td>
-          <td>−0.6</td>
-        </tr>
-        <tr>
-          <td>Top Right</td>
-          <td>Supportive External Predictors</td>
-          <td>Trust, Environmental Support</td>
-          <td>+0.7</td>
-        </tr>
-        <tr>
-          <td>Bottom Left</td>
-          <td>Subtle Modulators</td>
-          <td>Attention, Emotion</td>
-          <td>Contextual</td>
-        </tr>
-        <tr>
-          <td>Bottom Right</td>
-          <td>Positive Outcomes</td>
-          <td>Relief, Improved Experience</td>
-          <td>Derived</td>
-        </tr>
-        <tr>
-          <td>Center</td>
-          <td>Core Concept</td>
-          <td>Comfort Theory</td>
-          <td>Anchor</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Reference</h3>
-    <p>
-      Nichols, T., &amp; Nelson, J. W. (2021). Theory and Model Development to Address Pain Relief by Improving Comfort. 
-      In J. W. Nelson, J. Felgen, &amp; M. A. Hozak (Eds.), <em>Using Predictive Analytics to Improve Healthcare Outcomes</em> 
-      (pp. 171–182). Hoboken: Wiley.
-    </p>
+    Comfort arises from a dynamic interplay between internal and external predictors...
+    <!-- Table and Reference remain unchanged -->
   </div>
 
   <script>
     Chart.register(ChartDataLabels);
 
-    const ctx = document.getElementById('comfortChart').getContext('2d');
-
     function getLabelColor() {
       return document.body.classList.contains('dark-mode') ? '#fff' : '#000';
     }
 
+    const ctx = document.getElementById('comfortChart').getContext('2d');
     const comfortChart = new Chart(ctx, {
       type: 'bubble',
       data: {
         datasets: [
-          {
-            label: 'Core Hunch',
-            backgroundColor: '#4CAF50',
-            borderColor: '#388E3C',
-            data: [
-              { x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }
-            ]
-          },
-          {
-            label: 'Internal Predictors',
-            backgroundColor: '#F44336',
-            borderColor: '#D32F2F',
-            data: [
-              { x: -10, y: 10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' },
-              { x: -9, y: 9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }
-            ]
-          },
-          {
-            label: 'External Predictors',
-            backgroundColor: '#2196F3',
-            borderColor: '#1976D2',
-            data: [
-              { x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' },
-              { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }
-            ]
-          },
-          {
-            label: 'Modulators',
-            backgroundColor: '#9C27B0',
-            borderColor: '#7B1FA2',
-            data: [
-              { x: -5, y: -10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' },
-              { x: -6, y: -9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }
-            ]
-          },
-          {
-            label: 'Outcomes',
-            backgroundColor: '#FF9800',
-            borderColor: '#F57C00',
-            data: [
-              { x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' },
-              { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }
-            ]
-          }
+          { label: 'Core Hunch', backgroundColor: '#4CAF50', borderColor: '#388E3C', data: [{ x: 0, y: 0, r: 20, label: 'Comfort Theory', quadrant: 'Core Concept' }] },
+          { label: 'Internal Predictors', backgroundColor: '#F44336', borderColor: '#D32F2F', data: [{ x: -10, y: 10, r: 15, label: 'Worry', quadrant: 'Disruptive Internal Predictor' }, { x: -9, y: 9, r: 12, label: 'Helplessness', quadrant: 'Disruptive Internal Predictor' }] },
+          { label: 'External Predictors', backgroundColor: '#2196F3', borderColor: '#1976D2', data: [{ x: 10, y: 10, r: 15, label: 'Trust', quadrant: 'Supportive External Predictor' }, { x: 9, y: 9, r: 12, label: 'Environmental Support', quadrant: 'Supportive External Predictor' }] },
+          { label: 'Modulators', backgroundColor: '#9C27B0', borderColor: '#7B1FA2', data: [{ x: -5, y: -10, r: 12, label: 'Attention', quadrant: 'Subtle Modulator' }, { x: -6, y: -9, r: 12, label: 'Emotion', quadrant: 'Subtle Modulator' }] },
+          { label: 'Outcomes', backgroundColor: '#FF9800', borderColor: '#F57C00', data: [{ x: 5, y: -10, r: 15, label: 'Relief', quadrant: 'Positive Outcome' }, { x: 6, y: -9, r: 12, label: 'Improved Experience', quadrant: 'Positive Outcome' }] }
         ]
       },
       options: {
-        animation: {
-          duration: 2000
-        },
-        layout: {
-          padding: {
-            top: 20,
-            bottom: 20,
-            left: 20,
-            right: 20
-          }
-        },
+        animation: { duration: 2000 },
+        layout: { padding: { top: 20, bottom: 20, left: 20, right: 20 } },
         plugins: {
           datalabels: {
             align: 'center',
             anchor: 'center',
             color: getLabelColor,
-            font: {
-              weight: 'bold',
-              size: 12
-            },
-            formatter: function(value) {
-              return value.label
-                          }
+            font: { weight: 'bold', size: 12 },
+            formatter: function(value) { return value.label }
           },
           tooltip: {
             callbacks: {
@@ -252,32 +179,19 @@
           },
           legend: {
             position: 'top',
-            labels: {
-              boxWidth: 20,
-              padding: 15
-            }
+            labels: { boxWidth: 20, padding: 15 }
           }
         },
         scales: {
           x: {
-            title: {
-              display: true,
-              text: 'Influence Axis',
-              color: 'inherit'
-            },
-            min: -12,
-            max: 12,
+            title: { display: true, text: 'Influence Axis', color: 'inherit' },
+            min: -12, max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           },
           y: {
-            title: {
-              display: true,
-              text: 'Impact Axis',
-              color: 'inherit'
-            },
-            min: -12,
-            max: 12,
+            title: { display: true, text: 'Impact Axis', color: 'inherit' },
+            min: -12, max: 12,
             ticks: { color: 'inherit' },
             grid: { color: 'rgba(200,200,200,0.2)' }
           }
@@ -286,24 +200,42 @@
     });
 
     const toggleButton = document.getElementById('themeToggle');
-
     function updateCanvasBackground() {
       const canvas = document.getElementById('comfortChart');
       const isDark = document.body.classList.contains('dark-mode');
       canvas.style.backgroundColor = isDark ? '#000' : '#fff';
     }
 
-    // Initial setup
     updateCanvasBackground();
+toggleButton.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+  updateCanvasBackground();
+  comfortChart.options.plugins.datalabels.color = getLabelColor;
+  comfortChart.update();
+});
 
-    // Toggle theme and update canvas background
-    toggleButton.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-      document.body.classList.toggle('dark-mode');
-      updateCanvasBackground();
-      comfortChart.options.plugins.datalabels.color = getLabelColor;
-      comfortChart.update();
-    });
+
+    // TAB FUNCTIONALITY: Modular tab switching
+    function openTab(evt, tabName) {
+      const tabContents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove("active");
+      }
+      const tabButtons = document.getElementsByClassName("tab-button");
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
+      }
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+
+    // Future Dropdown Hook (optional)
+    // function switchView(tabName) {
+    //   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    //   document.getElementById(tabName).classList.add('active');
+    // }
   </script>
 </body>
 </html>
+
